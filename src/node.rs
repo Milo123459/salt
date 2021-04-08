@@ -20,12 +20,18 @@ pub fn display_node(node: Node) -> String {
 		node.created_at.year().to_string().red().to_string(),
 		"]".yellow().to_string()
 	);
-	let name = node.name.green().to_string();
+	let name = node.name.truecolor(246, 105, 194).bold().to_string();
 	let tasks_size = format!(
 		"{}{}{}",
 		"[".yellow().to_string(),
 		node.tasks.len().to_string().blue().to_string(),
 		"]".yellow().to_string()
 	);
-	format!("{} {} {}", name, date, tasks_size)
+	let tasks = node
+		.tasks
+		.iter()
+		.map(|task: &task::Task| task::display_task(task))
+		.collect::<Vec<_>>()
+		.join("\n  └─>");
+	format!("{} {} {}\n {}\n  └─>{}", name, date, tasks_size, "Tasks".bold().truecolor(113, 247, 159).to_string(), tasks)
 }

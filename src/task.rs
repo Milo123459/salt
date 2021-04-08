@@ -5,7 +5,7 @@ pub struct Task {
 	pub task: String,
 }
 
-pub fn display_task(task: Task) -> String {
+pub fn display_task(task: &Task) -> String {
 	let mut status = "[]".yellow().to_string();
 	if task.checked == true {
 		status = format!(
