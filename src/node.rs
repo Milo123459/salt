@@ -33,5 +33,12 @@ pub fn display_node(node: Node) -> String {
 		.map(|task: &task::Task| task::display_task(task))
 		.collect::<Vec<_>>()
 		.join("\n  └─>");
-	format!("{} {} {}\n {}\n  └─>{}", name, date, tasks_size, "Tasks".bold().truecolor(113, 247, 159).to_string(), tasks)
+	format!(
+		"{} {} {}\n {}\n  └─>{}",
+		name,
+		date,
+		tasks_size,
+		"Tasks".bold().truecolor(113, 247, 159).to_string(),
+		tasks
+	)
 }
