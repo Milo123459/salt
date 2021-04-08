@@ -8,7 +8,7 @@ pub struct Node {
 	pub created_at: DateTime<Local>,
 }
 
-pub fn display_node(node: Node) -> String {
+pub fn display_node(node: Node, show_hidden: bool) -> String {
 	let date = format!(
 		"{}{}{:02}{}{:02}{}{:02}{}",
 		"[".yellow().to_string(),
@@ -24,13 +24,31 @@ pub fn display_node(node: Node) -> String {
 	let tasks_size = format!(
 		"{}{}{}",
 		"[".yellow().to_string(),
-		node.tasks.len().to_string().blue().to_string(),
+		node.tasks
+			.iter()
+			.filter(|task| if show_hidden == true {
+				true
+			} else {
+				task.checked == false
+			})
+			.collect::<Vec<_>>()
+			.len()
+			.to_string()
+			.blue()
+			.to_string(),
 		"]".yellow().to_string()
 	);
 	let tasks = node
 		.tasks
 		.iter()
-		.map(|task: &task::Task| task::display_task(task))
+		.filter(|task| {
+			if show_hidden == true {
+				true
+			} else {
+				task.checked == false
+			}
+		})
+		.map(|task| task::display_task(task))
 		.collect::<Vec<_>>()
 		.join("\n  └─>");
 	format!(
