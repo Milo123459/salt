@@ -1,5 +1,5 @@
 use anyhow;
-use dirs::home_dir;
+use dirs_next::home_dir;
 use std::fs;
 use std::path::{Path, PathBuf};
 //use crate::config::SaltFile;
