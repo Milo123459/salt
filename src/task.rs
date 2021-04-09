@@ -1,5 +1,6 @@
+#![allow(dead_code)]
 use colored::*;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Task {

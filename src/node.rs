@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Node {
 	pub name: String,
-	pub tasks: Vec<task::Task>
+	pub tasks: Vec<task::Task>,
 }
 
 pub fn display_node(node: Node, show_hidden: bool) -> String {

@@ -1,9 +1,8 @@
-use crate::match_patterns;
-use colored::*;
 use crate::args;
 use crate::config;
+use crate::match_patterns;
+use colored::*;
 use std::io::Error;
-
 
 pub fn action(input: Vec<&str>) -> anyhow::Result<()> {
 	// this will sanitize the vec in a sense
@@ -22,8 +21,8 @@ pub fn action(input: Vec<&str>) -> anyhow::Result<()> {
 }
 
 pub fn match_cmds(args: args::Arguments, config: config::SaltFile) -> anyhow::Result<()> {
-    let cmd = &args.action;
-    match_patterns! { &*cmd.to_lowercase(), patterns,
+	let cmd = &args.action;
+	match_patterns! { &*cmd.to_lowercase(), patterns,
 		"action" => action(patterns)?,
 		"actions" => action(patterns)?,
 		_ => return Err(anyhow::Error::new(Error::new(
@@ -31,5 +30,5 @@ pub fn match_cmds(args: args::Arguments, config: config::SaltFile) -> anyhow::Re
 			"Invalid action. Try the command `action`",
 		)))
 	};
-    Ok(())
+	Ok(())
 }
