@@ -15,5 +15,16 @@ pub struct Arguments {
 
 	/// display done tasks (only applies on certain commands)
 	#[structopt(long, short)]
-	pub checked: bool,
+	pub(crate) checked: Option<Option<bool>>,
+}
+
+// for the usage of --checked
+impl Arguments {
+	pub fn checked(&self) -> bool {
+		match self.checked {
+			None => false,
+			Some(None) => true,
+			Some(Some(a)) => a,
+		}
+	}
 }
