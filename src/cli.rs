@@ -1,5 +1,6 @@
 use crate::args;
 use crate::config;
+use crate::get_and_parse;
 use crate::match_patterns;
 use crate::node;
 use colored::*;
@@ -24,11 +25,27 @@ pub fn action(input: Vec<&str>) -> anyhow::Result<()> {
 pub fn node_sub_command(
 	config: config::SaltFile,
 	args: args::Arguments,
-	node: String,
+	supplied_node: String,
+	checked: bool,
 ) -> anyhow::Result<()> {
 	if args.arguments.first().is_some() {
 		match_patterns! { &*args.arguments.first().unwrap().to_lowercase(), patterns,
 			"help" => action(patterns)?,
+			"new" => {
+				if config.nodes.iter().any(|i| i.name == supplied_node) {
+					return Err(anyhow::Error::new(Error::new(
+						std::io::ErrorKind::InvalidInput,
+						"You can't create a node that already exists"
+					)))
+				};
+				let mut newconfig = config.clone();
+				newconfig.nodes.push(node::Node {
+					name: supplied_node.clone().to_owned(),
+					tasks: vec![]
+				});
+				get_and_parse::write(newconfig)?;
+				println!("{} `{}`", "Created new node".bold().to_string(), &supplied_node.red().to_string())
+			},
 			"list" => {
 				let nodes = config.nodes.into_iter().map(|x| x.name).collect::<Vec<_>>();
 				println!("Available nodes:\n{}", nodes.join(", ").underline().bold())
@@ -46,12 +63,12 @@ pub fn node_sub_command(
 
 pub fn match_cmds(args: args::Arguments, config: config::SaltFile) -> anyhow::Result<()> {
 	let cmd = &args.action;
-	let node = args.clone().node;
+	let supplied_node = args.clone().node;
 	let checked = args.clone().checked();
 	match_patterns! { &*cmd.to_lowercase(), patterns,
 		"action" => action(patterns)?,
 		"actions" => action(patterns)?,
-		"node" => node_sub_command(config, args, node)?,
+		"node" => node_sub_command(config, args, supplied_node, checked)?,
 		_ => return Err(anyhow::Error::new(Error::new(
 			std::io::ErrorKind::InvalidInput,
 			"Invalid action. Try the command `action`",
