@@ -8,7 +8,6 @@ env:
 jobs:
   check:
     runs-on: ubuntu-latest
-    fail-fast: false
     steps:
       - uses: actions/checkout@v2
       - run: sudo apt-get update && sudo apt-get install gcc clang g++ -y
