@@ -6,12 +6,17 @@ use serde::{Deserialize, Serialize};
 pub struct Task {
 	pub checked: bool,
 	pub task: String,
-    pub id: i32
+	pub id: i32,
 }
 
 pub fn display_task(task: &Task) -> String {
 	let mut status = "[]".yellow().to_string();
-    let id = format!("{}{}{}", "(".blue().to_string(), task.id.to_string().red().to_string(), ")".blue().to_string());
+	let id = format!(
+		"{}{}{}",
+		"(".blue().to_string(),
+		task.id.to_string().red().to_string(),
+		")".blue().to_string()
+	);
 	if task.checked == true {
 		status = format!(
 			"{}{}{}",
