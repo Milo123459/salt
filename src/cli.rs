@@ -21,34 +21,37 @@ pub fn action(input: Vec<&str>) -> anyhow::Result<()> {
 	Ok(())
 }
 
-pub fn node_sub_command(config: config::SaltFile, args: args::Arguments, node: String) -> anyhow::Result<()> {
-    if args.arguments.first().is_some() {
-        
+pub fn node_sub_command(
+	config: config::SaltFile,
+	args: args::Arguments,
+	node: String,
+) -> anyhow::Result<()> {
+	if args.arguments.first().is_some() {
 		match_patterns! { &*args.arguments.first().unwrap().to_lowercase(), patterns,
-            "help" => action(patterns)?,
-            "list" => {
-                let nodes = config.nodes.into_iter().map(|x| x.name).collect::<Vec<_>>();
-                println!("Available nodes:\n{}", nodes.join(", ").underline().bold())
-            },
-            _ => return Err(anyhow::Error::new(Error::new(
-                std::io::ErrorKind::InvalidInput,
-                "Invalid sub-action. Try the command `node help`",
-            )))
-        }
-    } else {
-        println!("Try `node help`")
-    }
-    Ok(())
+			"help" => action(patterns)?,
+			"list" => {
+				let nodes = config.nodes.into_iter().map(|x| x.name).collect::<Vec<_>>();
+				println!("Available nodes:\n{}", nodes.join(", ").underline().bold())
+			},
+			_ => return Err(anyhow::Error::new(Error::new(
+				std::io::ErrorKind::InvalidInput,
+				"Invalid sub-action. Try the command `node help`",
+			)))
+		}
+	} else {
+		println!("Try `node help`")
+	}
+	Ok(())
 }
 
 pub fn match_cmds(args: args::Arguments, config: config::SaltFile) -> anyhow::Result<()> {
 	let cmd = &args.action;
-    let node = args.clone().node;
-    let checked = args.clone().checked();
+	let node = args.clone().node;
+	let checked = args.clone().checked();
 	match_patterns! { &*cmd.to_lowercase(), patterns,
 		"action" => action(patterns)?,
 		"actions" => action(patterns)?,
-        "node" => node_sub_command(config, args, node)?,
+		"node" => node_sub_command(config, args, node)?,
 		_ => return Err(anyhow::Error::new(Error::new(
 			std::io::ErrorKind::InvalidInput,
 			"Invalid action. Try the command `action`",
