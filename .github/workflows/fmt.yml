@@ -3,6 +3,8 @@ name: Rust FMT
 on:
   push:
     branches: [ master ]
+  pull_request:
+    branches: [ master ]
 env:
   CARGO_TERM_COLOR: always
 jobs:
@@ -16,29 +18,7 @@ jobs:
           toolchain: stable
           override: true
       - run: rustup component add rustfmt
-      - name: Run FMT check
-        id: check
-        uses: actions-rs/cargo@v1
+      - uses: actions-rs/cargo@v1
         with:
           command: fmt
           args: -- --check --
-      - name: Commit hash
-        id: hash
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-      - name: Run FMT
-        if: steps.check.outcome != 'success'
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: 
-      - name: Create Pull Request
-        if: steps.check.outcome != 'success'
-        uses: peter-evans/create-pull-request@v3
-        with:
-          branch: auto-fmt
-          commit-message: "chore: style: run fmt"
-          delete-branch: true
-          title: Format code
-          body: "Ran `cargo fmt` to format code as commit ${{ steps.hash.sha_short }} did not meet style guidelines."
-          assignees: Milo123459
-
