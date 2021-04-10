@@ -8,6 +8,7 @@ env:
 jobs:
   check:
     runs-on: ubuntu-latest
+    fail-fast: false
     steps:
       - uses: actions/checkout@v2
       - run: sudo apt-get update && sudo apt-get install gcc clang g++ -y
@@ -22,7 +23,6 @@ jobs:
         with:
           command: fmt
           args: -- --check --
-        fail-fast: false
       - name: Commit hash
         id: hash
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
