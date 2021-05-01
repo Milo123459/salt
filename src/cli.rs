@@ -35,7 +35,7 @@ pub fn node_sub_command(
 				if config.nodes.iter().any(|i| i.name == supplied_node) {
 					return Err(anyhow::Error::new(Error::new(
 						std::io::ErrorKind::InvalidInput,
-						"You can't create a node that already exists"
+						format!("You can't create a node that already exists (supplied node was `{}` - please use --node <name> to specify the node name)", supplied_node)
 					)))
 				};
 				let mut newconfig = config.clone();
@@ -49,6 +49,10 @@ pub fn node_sub_command(
 			"list" => {
 				let nodes = config.nodes.into_iter().map(|x| x.name).collect::<Vec<_>>();
 				println!("Available nodes:\n{}", nodes.join(", ").underline().bold())
+			},
+			"tasks" => {
+				let possible_node = node::get_node(&supplied_node)?;
+				println!("{}", node::display_node(possible_node, checked));
 			},
 			_ => return Err(anyhow::Error::new(Error::new(
 				std::io::ErrorKind::InvalidInput,
