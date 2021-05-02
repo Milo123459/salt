@@ -1,0 +1,127 @@
+name: Deploy
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+# check out starship/starship - inspired by their workflow
+jobs:
+  github_build:
+    name: Build release binaries
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            name: salt-x86_64-unknown-linux-gnu.tar.gz
+
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-latest
+            name: salt-x86_64-unknown-linux-musl.tar.gz
+
+          - target: i686-unknown-linux-musl
+            os: ubuntu-latest
+            name: salt-i686-unknown-linux-musl.tar.gz
+
+          - target: x86_64-apple-darwin
+            os: macOS-latest
+            name: salt-x86_64-apple-darwin.tar.gz
+
+          - target: aarch64-apple-darwin
+            os: macOS-latest
+            name: salt-aarch64-apple-darwin.tar.gz
+
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            name: salt-x86_64-pc-windows-msvc.zip
+
+          - target: i686-pc-windows-msvc
+            os: windows-latest
+            name: salt-i686-pc-windows-msvc.zip
+
+          - target: aarch64-pc-windows-msvc
+            os: windows-latest
+            name: salt-aarch64-pc-windows-msvc.zip
+
+    runs-on: ${{ matrix.os }}
+    continue-on-error: true
+    steps:
+      - name: Setup | Checkout
+        uses: actions/checkout@v2
+      - name: Setup | Install llvm and build-essential, cmake, cmake-doc, snapd and ninja-build
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: sudo apt install llvm build-essential cmake cmake-doc ninja-build snapd
+      - name: Setup | Instal CC-Tool
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: sudo snap install cc-tool --edge --devmode
+      - name: Setup | Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+          profile: minimal
+          target: ${{ matrix.target }}
+      - name: Build | Build
+        uses: actions-rs/cargo@v1
+        # TODO: Remove this once it's the default
+        env:
+           SDKROOT: /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk
+        with:
+          command: build
+          args: --release --target ${{ matrix.target }}
+
+      - name: Post Build | Prepare artifacts [Windows]
+        if: matrix.os == 'windows-latest'
+        run: |
+          cd target/${{ matrix.target }}/release
+          strip salt.exe
+          7z a ../../../${{ matrix.name }} salt.exe
+          cd -
+      - name: Post Build | Prepare artifacts [-nix]
+        if: matrix.os != 'windows-latest'
+        run: |
+          cd target/${{ matrix.target }}/release
+          # TODO: investigate better cross platform stripping
+          strip salt || true
+          tar czvf ../../../${{ matrix.name }} salt
+          cd -
+      - name: Deploy | Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.name }}
+          path: ${{ matrix.name }}
+
+  # Create GitHub release with Rust build targets and release notes
+  github_release:
+    name: Create GitHub Release
+    needs: github_build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup | Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup | Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: "^1.15.7"
+
+      - name: Setup | Artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Setup | Checksums
+        run: for file in salt-*/salt-*; do openssl dgst -sha256 -r "$file" | awk '{print $1}' > "${file}.sha256"; done
+
+      - name: Setup | Release notes
+        run: |
+          GO111MODULE=on go get github.com/git-chglog/git-chglog/cmd/git-chglog@0.9.1
+          git-chglog -c .github/chglog/release.yml $(git describe --tags) > RELEASE.md
+      - name: Build | Publish
+        uses: softprops/action-gh-release@v1
+        with:
+          files: salt-*/salt-*
+          body_path: RELEASE.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
