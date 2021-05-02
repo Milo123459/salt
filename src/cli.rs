@@ -3,6 +3,7 @@ use crate::config;
 use crate::get_and_parse;
 use crate::match_patterns;
 use crate::node;
+use crate::task;
 use colored::*;
 use std::io::Error;
 
@@ -32,18 +33,19 @@ pub fn node_sub_command(
 		match_patterns! { &*args.arguments.first().unwrap().to_lowercase(), patterns,
 			"help" => action(patterns)?,
 			"new" => {
-				if config.nodes.iter().any(|i| i.name == supplied_node) {
+				if config.nodes.iter().any(|i| i.name.to_lowercase() == supplied_node.to_lowercase()) {
 					return Err(anyhow::Error::new(Error::new(
 						std::io::ErrorKind::InvalidInput,
 						format!("You can't create a node that already exists (supplied node was `{}` - please use --node <name> to specify the node name)", supplied_node)
 					)))
 				};
-				let mut newconfig = config.clone();
-				newconfig.nodes.push(node::Node {
+				let mut new_config = config.clone();
+				new_config.nodes.push(node::Node {
 					name: supplied_node.clone().to_owned(),
-					tasks: vec![]
+					tasks: vec![],
+					next_id: 1
 				});
-				get_and_parse::write(newconfig)?;
+				get_and_parse::write(new_config)?;
 				println!("{} `{}`", "Created new node".bold().to_string(), &supplied_node.red().to_string())
 			},
 			"list" => {
@@ -65,6 +67,38 @@ pub fn node_sub_command(
 	Ok(())
 }
 
+pub fn add(
+	config: config::SaltFile,
+	args: args::Arguments,
+	supplied_node: String,
+) -> anyhow::Result<()> {
+	if args.arguments.first().is_some() {
+		let task = args.arguments.join(" ");
+		let other_task = &task.clone();
+		let mut possible_node = node::get_node(&supplied_node)?;
+		let mut new_config = config.clone();
+		&possible_node.tasks.push(task::Task {
+			id: possible_node.next_id,
+			task,
+			checked: false,
+		});
+		for node_in_config in &mut new_config.nodes {
+			if *node_in_config.name.to_lowercase() == supplied_node.to_lowercase() {
+				*node_in_config = (&possible_node).to_owned();
+			}
+		}
+
+		(&possible_node).to_owned().next_id = &possible_node.next_id + 1;
+
+		get_and_parse::write(new_config)?;
+
+		println!("Created task `{}` in node `{}`", other_task, supplied_node);
+	} else {
+		println!("Please specify a task description!")
+	}
+	Ok(())
+}
+
 pub fn match_cmds(args: args::Arguments, config: config::SaltFile) -> anyhow::Result<()> {
 	let cmd = &args.action;
 	let supplied_node = args.clone().node;
@@ -73,6 +107,7 @@ pub fn match_cmds(args: args::Arguments, config: config::SaltFile) -> anyhow::Re
 		"action" => action(patterns)?,
 		"actions" => action(patterns)?,
 		"node" => node_sub_command(config, args, supplied_node, checked)?,
+		"add" => add(config, args, supplied_node)?,
 		_ => return Err(anyhow::Error::new(Error::new(
 			std::io::ErrorKind::InvalidInput,
 			"Invalid action. Try the command `action`",

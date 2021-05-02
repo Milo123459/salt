@@ -20,6 +20,7 @@ pub fn parse() -> anyhow::Result<SaltFile> {
 			nodes: vec![Node {
 				name: "Default".to_owned(),
 				tasks: vec![],
+				next_id: 1,
 			}],
 		};
 		write(config)

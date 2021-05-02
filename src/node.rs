@@ -8,11 +8,15 @@ use std::io::Error;
 pub struct Node {
 	pub name: String,
 	pub tasks: Vec<task::Task>,
+	pub next_id: i32,
 }
 
 pub fn get_node(name: &str) -> anyhow::Result<Node> {
 	let nodes = get_and_parse::read(get_and_parse::file_path())?;
-	let node = nodes.nodes.into_iter().find(|node| node.name == name);
+	let node = nodes
+		.nodes
+		.into_iter()
+		.find(|node| node.name.to_lowercase() == name.to_lowercase());
 	if let Some(n) = node {
 		Ok(n)
 	} else {

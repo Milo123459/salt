@@ -17,7 +17,7 @@ pub fn display_task(task: &Task) -> String {
 		task.id.to_string().red().to_string(),
 		")".blue().to_string()
 	);
-	if task.checked == true {
+	if task.checked {
 		status = format!(
 			"{}{}{}",
 			"[".yellow().to_string(),
