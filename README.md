@@ -20,7 +20,7 @@ brew install salt
 Linux:
 
 ```
-curl -fsSL https://raw.githubusercontent.com/Milo123459/glitter/master/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Milo123459/salt/master/install.sh | bash
 ```
 
 ## Concepts
