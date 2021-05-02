@@ -5,7 +5,6 @@ use dirs_next::home_dir;
 use std::fs;
 use std::io::prelude::*;
 use std::path::{Path, PathBuf};
-//use crate::config::SaltFile;
 
 pub fn parse() -> anyhow::Result<SaltFile> {
 	let dir = folder_path();
