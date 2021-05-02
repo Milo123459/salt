@@ -82,13 +82,14 @@ pub fn add(
 			task,
 			checked: false,
 		});
+
+		possible_node.next_id = &possible_node.next_id + 1;
 		for node_in_config in &mut new_config.nodes {
 			if *node_in_config.name.to_lowercase() == supplied_node.to_lowercase() {
 				*node_in_config = (&possible_node).to_owned();
 			}
 		}
-
-		(&possible_node).to_owned().next_id = &possible_node.next_id + 1;
+		dbg!(&possible_node);
 
 		get_and_parse::write(new_config)?;
 
@@ -103,6 +104,39 @@ pub fn add(
 	Ok(())
 }
 
+pub fn check(
+	config: config::SaltFile,
+	args: args::Arguments,
+	supplied_node: String,
+) -> anyhow::Result<()> {
+	if args.arguments.first().is_some() {
+		let mut possible_node = node::get_node(&supplied_node)?;
+		let mut new_config = config;
+		let mut status = false;
+		for task_node in &mut possible_node.tasks {
+			if *task_node.id.to_string() == args.arguments.first().unwrap().to_string() {
+				status = !task_node.checked;
+				task_node.checked = status;
+				*task_node = task_node.to_owned();
+			}
+		}
+		for node_in_config in &mut new_config.nodes {
+			if *node_in_config.name.to_lowercase() == supplied_node.to_lowercase() {
+				*node_in_config = (&possible_node).to_owned();
+			}
+		}
+		get_and_parse::write(new_config)?;
+		println!(
+			"Task with ID of `{}` was {}",
+			args.arguments.first().unwrap().to_string().red(),
+			if status { "checked" } else { "unchecked" }
+		)
+	} else {
+		println!("Please specify the task ID")
+	}
+	Ok(())
+}
+
 pub fn match_cmds(args: args::Arguments, config: config::SaltFile) -> anyhow::Result<()> {
 	let cmd = &args.action;
 	let supplied_node = args.clone().node;
@@ -112,6 +146,7 @@ pub fn match_cmds(args: args::Arguments, config: config::SaltFile) -> anyhow::Re
 		"actions" => action(patterns)?,
 		"node" => node_sub_command(config, args, supplied_node, checked)?,
 		"add" => add(config, args, supplied_node)?,
+		"check" => check(config, args, supplied_node)?,
 		_ => return Err(anyhow::Error::new(Error::new(
 			std::io::ErrorKind::InvalidInput,
 			"Invalid action. Try the command `action`",

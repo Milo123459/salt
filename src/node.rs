@@ -37,7 +37,7 @@ pub fn display_node(node: Node, show_hidden: bool) -> String {
 			.filter(|task| if show_hidden == true {
 				true
 			} else {
-				task.checked == false
+				!task.checked
 			})
 			.collect::<Vec<_>>()
 			.len()
@@ -49,13 +49,7 @@ pub fn display_node(node: Node, show_hidden: bool) -> String {
 	let tasks = node
 		.tasks
 		.iter()
-		.filter(|task| {
-			if show_hidden == true {
-				true
-			} else {
-				task.checked == false
-			}
-		})
+		.filter(|task| if show_hidden { true } else { !task.checked })
 		.map(|task| task::display_task(task))
 		.collect::<Vec<_>>()
 		.join("\n  └─>");
