@@ -92,7 +92,11 @@ pub fn add(
 
 		get_and_parse::write(new_config)?;
 
-		println!("Created task `{}` in node `{}`", other_task, supplied_node.red());
+		println!(
+			"Created task `{}` in node `{}`",
+			other_task,
+			supplied_node.red()
+		);
 	} else {
 		println!("Please specify a task description!")
 	}
