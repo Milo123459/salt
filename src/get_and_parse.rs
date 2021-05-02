@@ -2,7 +2,6 @@ use crate::config::SaltFile;
 use crate::node::Node;
 use anyhow::Context;
 use dirs_next::home_dir;
-use serde_json;
 use std::fs;
 use std::io::prelude::*;
 use std::path::{Path, PathBuf};
