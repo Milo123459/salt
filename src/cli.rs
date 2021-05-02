@@ -39,7 +39,7 @@ pub fn node_sub_command(
 						format!("You can't create a node that already exists (supplied node was `{}` - please use --node <name> to specify the node name)", supplied_node)
 					)))
 				};
-				let mut new_config = config.clone();
+				let mut new_config = config;
 				new_config.nodes.push(node::Node {
 					name: supplied_node.clone().to_owned(),
 					tasks: vec![],
