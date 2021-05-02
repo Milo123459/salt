@@ -76,7 +76,7 @@ pub fn add(
 		let task = args.arguments.join(" ");
 		let other_task = &task.clone();
 		let mut possible_node = node::get_node(&supplied_node)?;
-		let mut new_config = config.clone();
+		let mut new_config = config;
 		&possible_node.tasks.push(task::Task {
 			id: possible_node.next_id,
 			task,
