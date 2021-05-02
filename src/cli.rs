@@ -41,7 +41,7 @@ pub fn node_sub_command(
 				};
 				let mut new_config = config;
 				new_config.nodes.push(node::Node {
-					name: supplied_node.clone().to_owned(),
+					name: supplied_node.to_owned(),
 					tasks: vec![],
 					next_id: 1
 				});
