@@ -7,7 +7,8 @@
 Windows: [Scoop](https://scoop.sh)
 
 ```
-scoop install salt
+scoop bucket add sushi https://github.com/kidonng/sushi
+scoop install sushi/salt
 ```
 
 MacOS: [Brew](https://brew.sh)
