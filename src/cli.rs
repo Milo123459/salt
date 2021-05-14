@@ -89,7 +89,6 @@ pub fn add(
 				*node_in_config = (&possible_node).to_owned();
 			}
 		}
-		dbg!(&possible_node);
 
 		get_and_parse::write(new_config)?;
 
