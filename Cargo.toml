@@ -1,12 +1,12 @@
 [package]
 name = "salt"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Milo123459"]
 edition = "2018"
 
 [dependencies]
 serde_json = "1.0.64"
-serde = { version = "1.0.125", features = ["derive"] }
+serde = { version = "1.0.126", features = ["derive"] }
 structopt = "0.3.21"
 colored = "2.0.0"
 dirs-next = "2.0.0"
