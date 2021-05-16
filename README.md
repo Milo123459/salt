@@ -2,6 +2,8 @@
 
 ### Fast, simple task management from the CLI
 
+Read the **[dev post](https://dev.to/milo123459/salt-task-managment-4m1m)**
+
 ## Install
 
 Windows: [Scoop](https://scoop.sh)
