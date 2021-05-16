@@ -77,7 +77,7 @@ pub fn add(
 		let other_task = &task.clone();
 		let mut possible_node = node::get_node(&supplied_node)?;
 		let mut new_config = config;
-		&possible_node.tasks.push(task::Task {
+		possible_node.tasks.push(task::Task {
 			id: possible_node.next_id,
 			task,
 			checked: false,
@@ -113,7 +113,7 @@ pub fn check(
 		let mut new_config = config;
 		let mut status = false;
 		for task_node in &mut possible_node.tasks {
-			if *task_node.id.to_string() == args.arguments.first().unwrap().to_string() {
+			if task_node.id.to_string() == args.arguments.first().unwrap().to_string() {
 				status = !task_node.checked;
 				task_node.checked = status;
 				*task_node = task_node.to_owned();

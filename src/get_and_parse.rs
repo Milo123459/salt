@@ -42,7 +42,7 @@ pub fn write(config: SaltFile) -> anyhow::Result<SaltFile> {
 	let dir = folder_path();
 	fs::create_dir_all(dir)?;
 	let file = file_path();
-	let json = serde_json::to_string(&config.clone()).unwrap();
+	let json = serde_json::to_string(&config).unwrap();
 	let mut physical_file = fs::File::create(file.as_path())?;
 	physical_file.write_all(json.as_bytes())?;
 	Ok(config)
