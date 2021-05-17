@@ -14,12 +14,26 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "vscode-salt.helloWorld",
-        "title": "Hello World"
+      "viewsContainers": {
+          "activitybar": [
+              {
+                  "id": "salt-sidebar-view",
+                  "title": "Salt",
+                  "icon": "../assets/salt.svg"
+              }
+          ]
+      },
+      "views": {
+        "salt-sidebar-view": [
+            {
+                "type": "webview",
+                "id": "salt-sidebar",
+                "name": "Salt",
+                "icon": "../assets/salt.svg",
+                "contextualTitle": "Salt"
+            }
+        ]
       }
-    ]
   },
   "scripts": {
     "vscode:prepublish": "yarn run package",
