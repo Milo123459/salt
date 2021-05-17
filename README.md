@@ -1,6 +1,20 @@
-# salt
-
-### Fast, simple task management from the CLI
+<h1 align="center">❯ Salt</h1>
+<h3 align="center">
+Fast and simple task management from the CLI.
+<h3>
+<h3 align="center">
+    <a href="https://github.com/Milo123459/salt/releases">
+    <img src="https://img.shields.io/github/downloads/Milo123459/salt/total.svg">
+    </a>
+    <img src="https://img.shields.io/github/stars/Milo123459/salt">
+    <img src="https://tokei.rs/b1/github/Milo123459/salt?category=lines">
+</h3>
+<h3 align="center">
+<p>
+    <a href="https://dev.to/milo123459/salt-task-managment-4m1m">DEV Post</a> | <a href="https://www.youtube.com/watch?v=GMMQiHexb3Y">YouTube Video</a> 
+    </p>
+</h3>
+<h1></h1>
 
 Read the **[dev post](https://dev.to/milo123459/salt-task-managment-4m1m)**
 
