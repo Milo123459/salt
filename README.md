@@ -49,6 +49,12 @@ You have a node, and a task.
 
 Think of it like a tree with apples. The tree is the node, the apples are the tasks. They just live under specific houses.
 
+## Future ideas
+
+- Stats (ie, which node you use the most)
+- GitHub issue sync
+- Sync across multiple devices
+
 ## How to use
 
 Pretty simple:
