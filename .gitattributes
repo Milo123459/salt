@@ -1,2 +1,2 @@
 /install.sh linguist-documentation=true
-src/**/*.{ts,js,svelte,css} linguist-documentation=true
+vscode-salt/src/**/*.{ts,js,svelte,css} linguist-documentation=true
