@@ -46,8 +46,15 @@ export class SideBarProvider implements vscode.WebviewViewProvider {
 			vscode.Uri.joinPath(this._extensionUri, 'out', 'compiled/SideBar.js')
 		);
 		const styleMainUri = webview.asWebviewUri(
-			vscode.Uri.joinPath(this._extensionUri, 'out', 'compiled/SideBar.css')
+			vscode.Uri.joinPath(this._extensionUri, 'out', 'compiled/out/compiledSideBar.css')
 		);
+        const getOptions = (): vscode.WebviewOptions => {
+            return { 
+                enableScripts: true,
+            }
+        }
+
+        webview.options = getOptions()
 
 		const nonce = getNonce();
 		return `<!DOCTYPE html>

@@ -10,7 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:vscode-salt.helloWorld"
+        "onView:salt-sidebar"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
