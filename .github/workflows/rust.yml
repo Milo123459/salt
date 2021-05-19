@@ -4,10 +4,16 @@ on:
     paths-ignore:
       - "docs/**"
       - "**.md"
+      - "**.ts"
+      - "**.css"
+      - "**.svelte"
   pull_request:
     paths-ignore:
       - "docs/**"
-      - "**.md"
+      - "**.md"      
+      - "**.ts"
+      - "**.css"
+      - "**.svelte"
 
 jobs:
   # Run the `rustfmt` code formatter
