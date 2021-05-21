@@ -14,7 +14,7 @@ Fast and simple task management from the CLI.
 </h3>
 <h3 align="center">
 <p>
-    <a href="https://dev.to/milo123459/salt-task-managment-4m1m">DEV Post</a> | <a href="https://www.youtube.com/watch?v=GMMQiHexb3Y">YouTube Video</a> 
+    <a href="https://dev.to/milo123459/salt-task-managment-4m1m">DEV Post</a> | <a href="https://www.youtube.com/watch?v=GMMQiHexb3Y">YouTube Video</a>  | <a href="https://github.com/Milo123459/vscode-salt">VSCode Extension</a>
     </p>
 </h3>
 <h1></h1>
