@@ -47,7 +47,9 @@ curl -fsSL https://raw.githubusercontent.com/Milo123459/salt/master/install.sh |
 
 You have a node, and a task.
 
-Think of it like a tree with apples. The tree is the node, the apples are the tasks. They just live under specific houses.
+Think of it like a tree with apples. The tree is the node, the apples are the tasks. They just live under specific trees. 
+
+*just for context, apple = task, tree = node*
 
 ## Future ideas
 
