@@ -10,4 +10,4 @@ serde = { version = "1.0.126", features = ["derive"] }
 structopt = "0.3.21"
 colored = "2.0.0"
 dirs-next = "2.0.0"
-anyhow = "1.0.40"
+anyhow = "1.0.41"
