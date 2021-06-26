@@ -48,9 +48,9 @@ pub fn display_node(node: Node, show_hidden: bool) -> String {
 		.filter(|task| if show_hidden { true } else { !task.checked })
 		.map(|task| task::display_task(task))
 		.collect::<Vec<_>>()
-		.join("\n  └─>");
+		.join("\n  └─> ");
 	format!(
-		"{} {}\n {}\n  └─>{}",
+		"{} {}\n {}\n  └─> {}",
 		name,
 		tasks_size,
 		"Tasks".bold().truecolor(113, 247, 159).to_string(),
