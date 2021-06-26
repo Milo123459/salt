@@ -26,8 +26,8 @@ Fast and simple task management from the CLI.
 Windows: [Scoop](https://scoop.sh)
 
 ```
-scoop bucket add sushi https://github.com/kidonng/sushi
-scoop install sushi/salt
+scoop bucket add cone https://github.com/Milo123459/cone
+scoop install cone/salt
 ```
 
 MacOS: [Brew](https://brew.sh)
@@ -49,7 +49,7 @@ You have a node, and a task.
 
 Think of it like a tree with apples. The tree is the node, the apples are the tasks. They just live under specific trees. 
 
-*just for context, apple = task, tree = node*
+*just for context, apple = task, tree = node`*
 
 ## Future ideas
 
