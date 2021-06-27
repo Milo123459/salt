@@ -114,7 +114,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest]
         rust: [stable, nightly]
     steps:
       - name: Setup | Checkout
@@ -141,11 +141,6 @@ jobs:
           toolchain: ${{ matrix.rust }}
           profile: minimal
           override: true
-
-      # Install Mercurial (pre-installed on Linux and windows)
-      - name: Setup | Mercurial (macos)
-        if: matrix.os == 'macOS-latest'
-        run: brew install mercurial
 
       # Run the ignored tests that expect the above setup
       - name: Build | Test
