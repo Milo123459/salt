@@ -1,7 +1,6 @@
 #![allow(dead_code)]
 use colored::*;
 use serde::{Deserialize, Serialize};
-use std::io::Error;
 
 use crate::node::Node;
 
@@ -12,15 +11,12 @@ pub struct Task {
 	pub id: i32,
 }
 
-pub fn get_task(node: Node, id: i32) -> anyhow::Result<Task> {
+pub fn task_exists(node: Node, id: i32) -> anyhow::Result<bool> {
 	let task = node.tasks.iter().find(|task| task.id == id);
-	if let Some(t) = task {
-		Ok(t.clone())
+	if task.is_some() {
+		Ok(true)
 	} else {
-		Err(anyhow::Error::new(Error::new(
-			std::io::ErrorKind::InvalidInput,
-			format!("No task with id `{}` was found in node `{}`", id, node.name),
-		)))
+		Ok(false)
 	}
 }
 

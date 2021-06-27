@@ -6,6 +6,7 @@ use crate::node;
 use crate::task;
 use colored::*;
 use std::io::Error;
+use std::str::FromStr;
 
 pub fn action(input: Vec<&str>) -> anyhow::Result<()> {
 	// this will sanitize the vec in a sense
@@ -142,6 +143,45 @@ pub fn tasks(checked: bool, supplied_node: String) -> anyhow::Result<()> {
 	Ok(())
 }
 
+pub fn edit(
+	config: config::SaltFile,
+	args: args::Arguments,
+	supplied_node: String,
+) -> anyhow::Result<()> {
+	if args.arguments.first().is_some() && args.arguments.get(1).is_some() {
+		let joined_args = args.arguments.join(" ");
+		let parsed_arguments = joined_args.split_once(" ").unwrap();
+		let id = FromStr::from_str(parsed_arguments.0)?;
+		let new_description = parsed_arguments.1;
+		let mut possible_node = node::get_node(&supplied_node)?;
+		let mut new_config = config;
+		if task::task_exists(possible_node.clone(), id).unwrap() {
+			if let Some(task) = possible_node.tasks.iter_mut().find(|t| t.id == id) {
+				task.task = String::from(new_description)
+			}
+
+			for node_in_config in &mut new_config.nodes {
+				if *node_in_config.name.to_lowercase() == supplied_node.to_lowercase() {
+					*node_in_config = (&possible_node).to_owned();
+				}
+			}
+
+			get_and_parse::write(new_config)?;
+
+			println!(
+				"Edited task with ID `{}` in node `{}`",
+				id,
+				supplied_node.red()
+			);
+		} else {
+			println!("Couldn't find task.")
+		}
+	} else {
+		println!("Please specify a task id, and the new description of the task.")
+	}
+	Ok(())
+}
+
 pub fn all(config: config::SaltFile, checked: bool) -> anyhow::Result<()> {
 	for supplied_node in config.nodes {
 		println!("{}", node::display_node(supplied_node, checked));
@@ -161,6 +201,7 @@ pub fn match_cmds(args: args::Arguments, config: config::SaltFile) -> anyhow::Re
 		"check" => check(config, args, supplied_node)?,
 		"tasks" => tasks(checked, supplied_node)?,
 		"all" => all(config, checked)?,
+		"edit" => edit(config, args, supplied_node)?,
 		_ => return Err(anyhow::Error::new(Error::new(
 			std::io::ErrorKind::InvalidInput,
 			"Invalid action. Try the command `action`",
