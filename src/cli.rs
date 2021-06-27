@@ -57,6 +57,29 @@ pub fn node_sub_command(
 				let possible_node = node::get_node(&supplied_node)?;
 				println!("{}", node::display_node(possible_node, checked));
 			},
+			"convert" => {
+				if args.arguments.get(1).is_some() {
+
+				match_patterns! { &*args.arguments.get(1).unwrap().to_lowercase(), patterns_for_convert,
+					"help" => action(patterns_for_convert)?,
+					"md" => {
+						let possible_node = node::get_node(&supplied_node)?;
+						let mut markdown: Vec<String> = vec![];
+						markdown.push(format!("**{}**\n", possible_node.name));
+						for task in possible_node.tasks {
+							markdown.push(format!("- [{}] **{}** ({})", if task.checked { "x" } else { " " }, task.task, task.id));
+						}
+						println!("{}", markdown.join("\n"))
+					},
+					_ => return Err(anyhow::Error::new(Error::new(
+						std::io::ErrorKind::InvalidInput,
+						"Invalid sub-action. Try the command `convert help`",
+					)))
+				}
+			} else {
+				println!("Invalid sub-action. Try the command `convert help`")
+			}
+			},
 			_ => return Err(anyhow::Error::new(Error::new(
 				std::io::ErrorKind::InvalidInput,
 				"Invalid sub-action. Try the command `node help`",
