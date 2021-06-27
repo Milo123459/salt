@@ -142,6 +142,13 @@ pub fn tasks(checked: bool, supplied_node: String) -> anyhow::Result<()> {
 	Ok(())
 }
 
+pub fn all(config: config::SaltFile, checked: bool) -> anyhow::Result<()> {
+	for supplied_node in config.nodes {
+		println!("{}", node::display_node(supplied_node, checked));
+	}
+	Ok(())
+}
+
 pub fn match_cmds(args: args::Arguments, config: config::SaltFile) -> anyhow::Result<()> {
 	let cmd = &args.action;
 	let supplied_node = args.clone().node;
@@ -153,6 +160,7 @@ pub fn match_cmds(args: args::Arguments, config: config::SaltFile) -> anyhow::Re
 		"add" => add(config, args, supplied_node)?,
 		"check" => check(config, args, supplied_node)?,
 		"tasks" => tasks(checked, supplied_node)?,
+		"all" => all(config, checked)?,
 		_ => return Err(anyhow::Error::new(Error::new(
 			std::io::ErrorKind::InvalidInput,
 			"Invalid action. Try the command `action`",
