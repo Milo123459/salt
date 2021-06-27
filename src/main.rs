@@ -10,6 +10,6 @@ pub use anyhow::Context;
 pub use structopt::StructOpt;
 
 fn main() -> anyhow::Result<()> {
-	run::run(args::Arguments::from_args_safe()?)?;
+	run::run(args::Arguments::from_args())?;
 	Ok(())
 }
