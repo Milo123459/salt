@@ -1,6 +1,6 @@
 [package]
 name = "salt"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["Milo123459"]
 edition = "2018"
 include = ["src/**/*", "LICENSE", "README.md"]
