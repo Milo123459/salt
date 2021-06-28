@@ -4,6 +4,12 @@ version = "0.2.2"
 authors = ["Milo123459"]
 edition = "2018"
 include = ["src/**/*", "LICENSE", "README.md"]
+license = "MIT"
+license-file = "LICENSE"
+documentation = "https://github.com/Milo123459/salt"
+homepage = "https://github.com/Milo123459/salt"
+repository = "https://github.com/Milo123459/salt"
+description = "Task management for the CLI"
 
 [dependencies]
 serde_json = "1.0.64"
@@ -12,3 +18,6 @@ structopt = "0.3.21"
 colored = "2.0.0"
 dirs-next = "2.0.0"
 anyhow = "1.0.41"
+
+[[bin]]
+name = "salt"
