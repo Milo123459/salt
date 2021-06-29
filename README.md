@@ -43,6 +43,12 @@ Linux:
 curl -fsSL https://raw.githubusercontent.com/Milo123459/salt/master/install.sh | bash
 ```
 
+Litreally anything (Rust needed):
+
+```
+    cargo install salt
+```
+
 ## Concepts
 
 You have a node, and a task.
