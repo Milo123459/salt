@@ -35,8 +35,7 @@ pub fn display_node(node: Node, show_hidden: bool) -> String {
 		node.tasks
 			.iter()
 			.filter(|task| if show_hidden { true } else { !task.checked })
-			.collect::<Vec<_>>()
-			.len()
+			.count()
 			.to_string()
 			.blue()
 			.to_string(),

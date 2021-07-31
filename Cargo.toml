@@ -5,7 +5,6 @@ authors = ["Milo123459"]
 edition = "2018"
 include = ["src/**/*", "LICENSE", "README.md"]
 license = "MIT"
-license-file = "LICENSE"
 documentation = "https://github.com/Milo123459/salt"
 homepage = "https://github.com/Milo123459/salt"
 repository = "https://github.com/Milo123459/salt"

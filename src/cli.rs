@@ -137,7 +137,7 @@ pub fn check(
 		let mut new_config = config;
 		let mut status = false;
 		for task_node in &mut possible_node.tasks {
-			if task_node.id.to_string() == args.arguments.first().unwrap().to_string() {
+			if task_node.id.to_string() == *args.arguments.first().unwrap() {
 				status = !task_node.checked;
 				task_node.checked = status;
 				*task_node = task_node.to_owned();
@@ -222,6 +222,8 @@ pub fn match_cmds(args: args::Arguments, config: config::SaltFile) -> anyhow::Re
 		"node" => node_sub_command(config, args, supplied_node, checked)?,
 		"add" => add(config, args, supplied_node)?,
 		"check" => check(config, args, supplied_node)?,
+		"uncheck" => check(config, args, supplied_node)?,
+		"done" => check(config, args, supplied_node)?,
 		"tasks" => tasks(checked, supplied_node)?,
 		"all" => all(config, checked)?,
 		"edit" => edit(config, args, supplied_node)?,
