@@ -20,3 +20,6 @@ anyhow = "1.0.43"
 
 [[bin]]
 name = "salt"
+
+[profile.release]
+lto = "fat"
