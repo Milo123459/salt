@@ -13,7 +13,7 @@ description = "Task management for the CLI"
 [dependencies]
 serde_json = "1.0.67"
 serde = { version = "1.0.130", features = ["derive"] }
-structopt = "0.3.22"
+structopt = "0.3.23"
 colored = "2.0.0"
 dirs-next = "2.0.0"
 anyhow = "1.0.43"
