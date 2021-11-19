@@ -16,7 +16,7 @@ serde = { version = "1.0.130", features = ["derive"] }
 structopt = "0.3.25"
 colored = "2.0.0"
 dirs-next = "2.0.0"
-anyhow = "1.0.45"
+anyhow = "1.0.47"
 
 [[bin]]
 name = "salt"
