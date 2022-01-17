@@ -11,7 +11,7 @@ repository = "https://github.com/Milo123459/salt"
 description = "Task management for the CLI"
 
 [dependencies]
-serde_json = "1.0.70"
+serde_json = "1.0.75"
 serde = { version = "1.0.130", features = ["derive"] }
 structopt = "0.3.25"
 colored = "2.0.0"
