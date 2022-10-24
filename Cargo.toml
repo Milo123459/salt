@@ -12,7 +12,7 @@ description = "Task management for the CLI"
 
 [dependencies]
 serde_json = "1.0.70"
-serde = { version = "1.0.130", features = ["derive"] }
+serde = { version = "1.0.147", features = ["derive"] }
 structopt = "0.3.25"
 colored = "2.0.0"
 dirs-next = "2.0.0"
